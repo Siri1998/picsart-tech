@@ -6,15 +6,15 @@ const TableContainer = styled.div`
 `;
 
 const Table = styled.table`
-  width: 800px;
+  width: 100%;
   border-collapse: collapse;
   overflow: hidden;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   @media (max-width: 768px) {
-    width: 600px;
+    width: 768px;
   }
   @media (max-width: 600px) {
-    width: 469px;
+    width: 600px;
   }
 `;
 

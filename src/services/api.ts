@@ -3,16 +3,15 @@ import { IUser } from '../types/Global';
 
 const API_URL = 'https://jsonplaceholder.typicode.com';
 
-export const fetchUsers = (page: number) => {
-  return axios.get(`${API_URL}/users`, {
-    params: { _page: page, _limit: 5 },
-  });
+export const fetchUsers = async (page: number): Promise<IUser[]> => {
+  const response = await axios.get<{ data: IUser[] }>(
+    `${API_URL}/users?_start=${page}&_limit=5`,
+  );
+  return response.data as unknown as IUser[];
 };
 
 export const fetchUserById = async (id: number): Promise<IUser> => {
-  const response = await axios.get<IUser>(
-    `https://jsonplaceholder.typicode.com/users/${id}`,
-  );
+  const response = await axios.get<IUser>(`${API_URL}/users/${id}`);
   return response.data;
 };
 

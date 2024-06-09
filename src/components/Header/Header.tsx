@@ -1,11 +1,20 @@
-import React, { useState, useEffect, FormEvent } from 'react';
-import { fetchItems, addItem, deleteItem } from '../../services/api';
+import React from 'react';
+import ThemeSwitcher from '../ThemeSwitch/ThemeSwitch';
+import { Link } from 'react-router-dom';
+import { HeaderContainer } from './styles';
 
 const Header = () => {
   return (
-    <div>
-      <h1>HEADER</h1>
-    </div>
+    <HeaderContainer>
+      <nav>
+        <Link to='/'>Home</Link>
+        <Link to='/users' style={{ marginLeft: '20px' }}>
+          Users
+        </Link>
+      </nav>
+
+      <ThemeSwitcher />
+    </HeaderContainer>
   );
 };
 

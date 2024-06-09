@@ -1,30 +1,31 @@
-import { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import InfiniteScroll from 'react-infinite-scroll-component';
-
 import { fetchUsers } from '../../services/api';
-import CustomTable from '../../components/CustomTable/CustomTable';
-import { ScrollableContainer } from './styles';
 import { useUserStore } from '../../store/userStore';
-import { useNavigate } from 'react-router-dom';
+import CustomTable from '../../components/CustomTable/CustomTable';
+import { useNavigate } from 'react-router';
 import { IUser } from '../../types/Global';
+import { ScrollableContainer } from './styles';
+import { debounce } from 'lodash';
 
-const UserListPage = () => {
+const UserListPage: React.FC = () => {
   const users = useUserStore((state) => state.users);
-  const addUsers = useUserStore((state) => state.addUsers);
-  const [page, setPage] = useState<number>(1);
-  const [hasMore, setHasMore] = useState<boolean>(true);
-  const navigate = useNavigate();
   const setSelectedUser = useUserStore((state) => state.setSelectedUser);
+  const addUsers = useUserStore((state) => state.addUsers);
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(false);
+  const navigate = useNavigate();
 
   const fetchUsersCallback = useCallback(async () => {
     try {
-      const response = await fetchUsers(page);
-      addUsers(response.data);
-      setHasMore(response.data.length > 0);
+      const newUsers = await fetchUsers(page);
+      addUsers(newUsers);
+      setHasMore(newUsers.length > 0);
+      debouncedOnChange();
     } catch (error) {
       console.error('Error fetching users:', error);
     }
-  }, [page]);
+  }, [page, addUsers]);
 
   useEffect(() => {
     fetchUsersCallback();
@@ -46,9 +47,15 @@ const UserListPage = () => {
     navigate(`/user/${user.id}`);
   };
 
+  const toggleLoading = () => {
+    setHasMore(false);
+  };
+
+  const debouncedOnChange = debounce(toggleLoading, 2500);
+
   return (
-    <div>
-      <h1>User List</h1>
+    <>
+      <h1>User List With Load More</h1>
       <ScrollableContainer id='scrollableDiv'>
         <InfiniteScroll
           dataLength={users.length}
@@ -56,11 +63,12 @@ const UserListPage = () => {
           hasMore={hasMore}
           loader={<h4>Loading...</h4>}
           scrollableTarget='scrollableDiv'
+          endMessage={<h4>there is nothing</h4>}
         >
           <CustomTable columns={columns} data={users} handleGoDetails={handleGoDetails} />
         </InfiniteScroll>
       </ScrollableContainer>
-    </div>
+    </>
   );
 };
 

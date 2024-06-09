@@ -1,6 +1,8 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import { useUserStore } from '../../store/userStore';
+import { UserDetailsContainer, UserImage, UserName, UserTitle } from './styles';
+import avatarIcon from '../../assets/png/avatar.png';
 
 const UserDetails: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -18,14 +20,16 @@ const UserDetails: React.FC = () => {
   }
 
   return (
-    <div>
-      <h1>User Details</h1>
-      <p>Name: {user.name}</p>
-      <p>Email: {user?.email}</p>
-      <p>Age: {user?.age}</p>
-      {/* <p>Address: {user.address}</p> */}
-      <img src={user.profilePicture} alt={`${user.name}'s profile`} />
-    </div>
+    <UserDetailsContainer>
+      <UserImage
+        src={user?.profilePicture ? user?.profilePicture : avatarIcon}
+        alt={`${user.name}'s profile`}
+      />
+      <UserName>{user.name}</UserName>
+      <UserTitle>{user?.email}</UserTitle>
+      <UserTitle>{user?.age}</UserTitle>
+      <UserTitle>{user?.address?.city}</UserTitle>
+    </UserDetailsContainer>
   );
 };
 
