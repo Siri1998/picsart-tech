@@ -2,7 +2,7 @@ import styled from 'styled-components';
 
 const TableContainer = styled.div`
   overflow-y: auto;
-  max-height: 400px;
+  max-height: 300px;
 `;
 
 const Table = styled.table`
@@ -38,7 +38,7 @@ const Th = styled.th`
 `;
 
 const Td = styled.td`
-  padding: 15px;
+  padding: 5px;
   background-color: rgba(255, 255, 255, 0.2);
   color: #fff;
   position: relative;

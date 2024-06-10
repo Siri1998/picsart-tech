@@ -4,7 +4,7 @@ import { useUserStore } from '../../store/userStore';
 import CustomTable from '../../components/CustomTable/CustomTable';
 import { useNavigate } from 'react-router';
 import { IUser } from '../../types/Global';
-import { ScrollableContainer } from './styles';
+import { ScrollableContainer, UserListContainer } from './styles';
 
 const UserListPage: React.FC = () => {
   const users = useUserStore((state) => state.users);
@@ -47,14 +47,19 @@ const UserListPage: React.FC = () => {
   };
 
   return (
-    <>
+    <UserListContainer>
       <h1>User List With Load More</h1>
       <ScrollableContainer id='scrollableDiv'>
         <CustomTable columns={columns} data={users} handleGoDetails={handleGoDetails} />
-        {hasMore && <button onClick={loadMoreUsers}>Load More</button>}
-        {!hasMore && <h4>No more users to load</h4>}
+        <>
+          {hasMore ? (
+            <button onClick={loadMoreUsers}>Load More</button>
+          ) : (
+            <h4>No more users to load</h4>
+          )}
+        </>
       </ScrollableContainer>
-    </>
+    </UserListContainer>
   );
 };
 
