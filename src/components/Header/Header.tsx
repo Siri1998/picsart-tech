@@ -1,4 +1,3 @@
-import React from 'react';
 import ThemeSwitcher from '../ThemeSwitch/ThemeSwitch';
 import { Link } from 'react-router-dom';
 import { HeaderContainer } from './styles';
