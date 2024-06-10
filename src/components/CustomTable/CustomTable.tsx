@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   TableContainer,
   Table,
@@ -19,6 +19,10 @@ import { orderBy } from 'lodash';
 const CustomTable: React.FC<ITableProps> = ({ columns, data, handleGoDetails }) => {
   const [openMenuIndex, setOpenMenuIndex] = useState<number | null>(null);
   const [sortedData, setSortedData] = useState(data);
+
+  useEffect(() => {
+    setSortedData(data);
+  }, [data]);
 
   const [sortConfig, setSortConfig] = useState<{
     key: string;
@@ -42,6 +46,7 @@ const CustomTable: React.FC<ITableProps> = ({ columns, data, handleGoDetails }) 
     setSortedData(sortedArray);
     setSortConfig({ key, direction });
   };
+
   return (
     <TableContainer>
       <Table>

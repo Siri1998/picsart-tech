@@ -1,6 +1,7 @@
 import create from 'zustand';
 import { IUser } from '../types/Global';
 import { fetchUserById } from '../services/api';
+import { uniqBy } from 'lodash';
 
 interface UserState {
   users: IUser[];
@@ -13,7 +14,7 @@ interface UserState {
 export const useUserStore = create<UserState>((set) => ({
   users: [],
   addUsers: (newUsers: IUser[]) =>
-    set((state) => ({ users: [...state.users, ...newUsers] })),
+    set((state) => ({ users: uniqBy([...state.users, ...newUsers], 'id') })),
   selectedUser: null,
   setSelectedUser: (user) => set({ selectedUser: user }),
   fetchUser: async (id: number) => {
